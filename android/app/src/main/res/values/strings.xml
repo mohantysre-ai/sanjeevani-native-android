@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Sanjeevani</string>
+    <string name="title_activity_main">Sanjeevani</string>
+    <string name="package_name">com.ayush.sanjeevani</string>
+    <string name="custom_url_scheme">com.ayush.sanjeevani</string>
+</resources>

@@ -1,0 +1,15 @@
+# Node
+node_modules/
+dist/
+build/
+npm-debug.log*
+
+# Android / Gradle
+.gradle/
+/android/build/
+/android/.gradle/
+/android/app/build/
+/android/local.properties
+.idea/
+*.iml
+.DS_Store
