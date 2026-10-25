@@ -1,0 +1,21 @@
+{
+  "name": "Sanjeevani — Evidence-Graded AYUSH & Wellness",
+  "short_name": "Sanjeevani",
+  "description": "Evidence-tiered AYUSH herbs, yoga, NIN-aligned nutrition, safety-first calculators and herb–medication interaction checking.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#faf7f0",
+  "theme_color": "#2f5d3a",
+  "lang": "en",
+  "categories": ["health", "fitness", "medical", "lifestyle"],
+  "shortcuts": [
+    { "name": "Daily Dose", "url": "/#/daily", "description": "Today's picks, plan and evidence quiz" },
+    { "name": "Herbs", "url": "/#/herbs", "description": "Browse the graded herb library" },
+    { "name": "Interaction Checker", "url": "/#/checker", "description": "Herb × medication safety" }
+  ],
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,383 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Sanjeevani design tokens — "Botanical Glass"
+   Light: warm ivory surfaces, emerald primary, teal support,
+          restrained saffron/gold accent. Dark: deep emerald night.
+   ════════════════════════════════════════════════════════════════════ */
+:root {
+  --radius: 0.75rem;
+
+  /* surfaces */
+  --background: oklch(0.977 0.013 95);          /* warm ivory */
+  --foreground: oklch(0.26 0.028 155);          /* deep botanical ink */
+  --card: oklch(0.996 0.004 95);
+  --card-foreground: oklch(0.26 0.028 155);
+  --popover: oklch(0.996 0.004 95);
+  --popover-foreground: oklch(0.26 0.028 155);
+
+  /* brand */
+  --primary: oklch(0.46 0.105 155);             /* emerald */
+  --primary-foreground: oklch(0.985 0.005 120);
+  --secondary: oklch(0.945 0.022 110);          /* sage wash */
+  --secondary-foreground: oklch(0.34 0.05 158);
+  --muted: oklch(0.945 0.012 95);
+  --muted-foreground: oklch(0.47 0.022 152);
+  --accent: oklch(0.70 0.145 60);               /* saffron */
+  --accent-foreground: oklch(0.99 0.005 95);
+  --gold: oklch(0.78 0.125 85);                 /* restrained gold */
+  --gold-foreground: oklch(0.28 0.05 85);
+
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.905 0.016 105);
+  --input: oklch(0.905 0.016 105);
+  --ring: oklch(0.55 0.09 160);
+
+  --chart-1: oklch(0.55 0.13 155);
+  --chart-2: oklch(0.60 0.10 190);
+  --chart-3: oklch(0.70 0.14 60);
+  --chart-4: oklch(0.78 0.13 85);
+  --chart-5: oklch(0.45 0.07 200);
+  --sidebar: oklch(0.985 0.008 95);
+  --sidebar-foreground: oklch(0.26 0.028 155);
+  --sidebar-primary: oklch(0.46 0.105 155);
+  --sidebar-primary-foreground: oklch(0.985 0.005 120);
+  --sidebar-accent: oklch(0.945 0.022 110);
+  --sidebar-accent-foreground: oklch(0.34 0.05 158);
+  --sidebar-border: oklch(0.905 0.016 105);
+  --sidebar-ring: oklch(0.55 0.09 160);
+
+  /* type scale (px) — single source of truth for the app */
+  --ts-display: 28px;
+  --ts-title: 21px;
+  --ts-headline: 16px;
+  --ts-body: 14px;
+  --ts-label: 12px;
+  --ts-micro: 11px;
+
+  /* ══ Material 3 Expressive layer ═══════════════════════════════
+     Dynamic color (the web analog of wallpaper-derived palettes):
+     hero + ambient surfaces are CSS variables that the daypart
+     hook (use-daypart) retunes across the day — dawn / morning /
+     noon / dusk / night. Everything else consumes the vars. */
+  --m3-hero-a: oklch(0.42 0.105 152);
+  --m3-hero-b: oklch(0.52 0.09 172);
+  --m3-hero-c: oklch(0.62 0.09 192);
+  --m3-amb-a: oklch(0.9 0.045 152 / 0.75);
+  --m3-amb-b: oklch(0.92 0.05 85 / 0.6);
+  --m3-amb-c: oklch(0.9 0.035 192 / 0.7);
+
+  /* spring physics — expressive overshoot for micro-interactions */
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dark {
+  --background: oklch(0.215 0.018 168);         /* deep emerald night */
+  --foreground: oklch(0.945 0.012 110);
+  --card: oklch(0.252 0.02 165);
+  --card-foreground: oklch(0.945 0.012 110);
+  --popover: oklch(0.252 0.02 165);
+  --popover-foreground: oklch(0.945 0.012 110);
+
+  --primary: oklch(0.755 0.125 156);            /* luminous emerald */
+  --primary-foreground: oklch(0.2 0.04 158);
+  --secondary: oklch(0.30 0.022 162);
+  --secondary-foreground: oklch(0.94 0.012 110);
+  --muted: oklch(0.30 0.02 162);
+  --muted-foreground: oklch(0.72 0.018 120);
+  --accent: oklch(0.78 0.13 72);                /* warm saffron */
+  --accent-foreground: oklch(0.22 0.04 60);
+  --gold: oklch(0.80 0.12 88);
+  --gold-foreground: oklch(0.24 0.04 88);
+
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 11%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.65 0.09 165);
+
+  --chart-1: oklch(0.70 0.13 155);
+  --chart-2: oklch(0.70 0.10 190);
+  --chart-3: oklch(0.78 0.13 70);
+  --chart-4: oklch(0.80 0.12 88);
+  --chart-5: oklch(0.62 0.08 205);
+  --sidebar: oklch(0.252 0.02 165);
+  --sidebar-foreground: oklch(0.945 0.012 110);
+  --sidebar-primary: oklch(0.755 0.125 156);
+  --sidebar-primary-foreground: oklch(0.2 0.04 158);
+  --sidebar-accent: oklch(0.30 0.022 162);
+  --sidebar-accent-foreground: oklch(0.94 0.012 110);
+  --sidebar-border: oklch(1 0 0 / 11%);
+  --sidebar-ring: oklch(0.65 0.09 165);
+}
+
+/* ══ M3 Expressive daypart palettes (dynamic color) ═════════════
+   The hook writes data-daypart on <html>; these blocks retune the
+   hero/ambient hues so the app visually lives with the clock.
+   Luminance bands stay app-wide identical → white-on-hero text
+   contrast is preserved in every part of the day. */
+html[data-daypart='dawn'] {
+  --m3-hero-a: oklch(0.45 0.09 40);
+  --m3-hero-b: oklch(0.52 0.085 95);
+  --m3-hero-c: oklch(0.6 0.085 170);
+  --m3-amb-a: oklch(0.91 0.045 60 / 0.75);
+  --m3-amb-b: oklch(0.93 0.05 100 / 0.6);
+  --m3-amb-c: oklch(0.9 0.04 170 / 0.7);
+}
+html[data-daypart='morn'] {
+  --m3-hero-a: oklch(0.42 0.105 152);
+  --m3-hero-b: oklch(0.52 0.09 172);
+  --m3-hero-c: oklch(0.62 0.09 192);
+}
+html[data-daypart='noon'] {
+  --m3-hero-a: oklch(0.44 0.095 168);
+  --m3-hero-b: oklch(0.55 0.085 195);
+  --m3-hero-c: oklch(0.66 0.08 215);
+  --m3-amb-a: oklch(0.91 0.04 170 / 0.7);
+  --m3-amb-b: oklch(0.93 0.045 190 / 0.55);
+  --m3-amb-c: oklch(0.92 0.04 210 / 0.65);
+}
+html[data-daypart='dusk'] {
+  --m3-hero-a: oklch(0.44 0.1 45);
+  --m3-hero-b: oklch(0.5 0.085 140);
+  --m3-hero-c: oklch(0.58 0.07 255);
+  --m3-amb-a: oklch(0.9 0.05 60 / 0.7);
+  --m3-amb-b: oklch(0.91 0.04 140 / 0.55);
+  --m3-amb-c: oklch(0.89 0.04 260 / 0.6);
+}
+html[data-daypart='night'] {
+  --m3-hero-a: oklch(0.36 0.055 210);
+  --m3-hero-b: oklch(0.42 0.055 235);
+  --m3-hero-c: oklch(0.52 0.05 260);
+  --m3-amb-a: oklch(0.86 0.03 220 / 0.6);
+  --m3-amb-b: oklch(0.87 0.03 240 / 0.45);
+  --m3-amb-c: oklch(0.85 0.025 260 / 0.5);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* Android-first: Roboto on every Android device; Noto Sans Devanagari
+       covers Hindi glyphs; graceful fallbacks elsewhere. */
+    font-family: Roboto, 'Noto Sans', ui-sans-serif, system-ui, -apple-system,
+      'Segoe UI', 'Noto Sans Devanagari', 'Helvetica Neue', Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
+  }
+  /* slim scrollbars for long lists */
+  .scroll-slim::-webkit-scrollbar { width: 6px; height: 6px; }
+  .scroll-slim::-webkit-scrollbar-thumb { background: oklch(0.75 0.03 150 / 50%); border-radius: 3px; }
+  .scroll-slim::-webkit-scrollbar-track { background: transparent; }
+  ::selection { background: color-mix(in oklab, var(--primary) 22%, transparent); }
+
+  /* RTL support (Arabic / Persian / Hebrew / Urdu) — flip directional icons.
+     Layout spacing uses physical Tailwind utilities; the document dir keeps
+     text direction and reading order correct, which covers readability. */
+  [dir='rtl'] .rtl-flip { transform: scaleX(-1); }
+  [dir='rtl'] .rtl-text-right { text-align: right; }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Sanjeevani Mobile utilities
+   ════════════════════════════════════════════════════════════════════ */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .safe-top { padding-top: env(safe-area-inset-top, 0px); }
+
+  /* ── Glass system ───────────────────────────────────────────────
+     Selective translucency: nav bar, app bar, overlays, featured
+     cards. Forms & medical content stay on solid surfaces.
+     Blur is applied via Tailwind backdrop-blur-* utilities at usage
+     sites (the bundler strips raw backdrop-filter declarations). */
+  .glass {
+    background: color-mix(in oklab, var(--card) 74%, transparent);
+  }
+  .glass-nav {
+    background: color-mix(in oklab, var(--card) 78%, transparent);
+    border: 1px solid color-mix(in oklab, var(--foreground) 9%, transparent);
+  }
+  .glass-chip {
+    background: color-mix(in oklab, var(--card) 55%, transparent);
+    border: 1px solid rgb(255 255 255 / 0.28);
+  }
+  /* solid fallback when blur is unsupported (budget devices) */
+  @supports not (backdrop-filter: blur(1px)) {
+    .glass, .glass-nav { background: var(--card); }
+    .glass-chip { background: color-mix(in oklab, var(--card) 88%, transparent); }
+  }
+
+  /* glossy top highlight for colored hero surfaces */
+  .gloss { position: relative; isolation: isolate; }
+  .gloss::before {
+    content: ""; position: absolute; inset: 0 0 auto 0; height: 42%;
+    border-radius: inherit; pointer-events: none; z-index: 0;
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.20), rgb(255 255 255 / 0.02) 75%, transparent);
+  }
+  .gloss-strong::before {
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.30), rgb(255 255 255 / 0.04) 75%, transparent);
+  }
+
+  .tap-none { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+
+  /* ── Botanical gradients (Ayurveda-inspired, restrained) ────────
+     grad-hero is M3E dynamic: it reads the daypart variables above
+     so the hero, FAB and brand chips shift hue across the day. */
+  .grad-hero {
+    background-image: linear-gradient(
+      135deg,
+      var(--m3-hero-a) 0%,
+      var(--m3-hero-b) 55%,
+      var(--m3-hero-c) 100%
+    );
+    transition: background-image 0.8s ease;
+  }
+  .grad-herbs { background-image: linear-gradient(135deg, oklch(0.45 0.115 150), oklch(0.63 0.12 145)); }
+  .grad-yoga { background-image: linear-gradient(135deg, oklch(0.57 0.135 42), oklch(0.72 0.125 62)); }
+  .grad-foods { background-image: linear-gradient(135deg, oklch(0.63 0.13 72), oklch(0.79 0.125 90)); }
+  .grad-remedy { background-image: linear-gradient(135deg, oklch(0.50 0.075 202), oklch(0.66 0.085 212)); }
+  .grad-pro { background-image: linear-gradient(135deg, oklch(0.36 0.05 162), oklch(0.47 0.07 172) 55%, oklch(0.62 0.115 78)); }
+  .grad-flame { background-image: linear-gradient(135deg, oklch(0.63 0.165 52), oklch(0.77 0.14 82)); }
+
+  .text-grad-hero {
+    background-image: linear-gradient(120deg, var(--m3-hero-a), var(--m3-hero-c));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .dark .text-grad-hero {
+    background-image: linear-gradient(120deg, oklch(0.78 0.11 158), oklch(0.82 0.08 190));
+  }
+
+  /* ── Elevation ────────────────────────────────────────────────── */
+  .shadow-card { box-shadow: 0 1px 2px rgb(30 50 35 / 0.05), 0 6px 20px -8px rgb(30 50 35 / 0.12); }
+  .shadow-float { box-shadow: 0 8px 30px -6px rgb(25 60 35 / 0.28); }
+  .shadow-tab { box-shadow: 0 12px 36px -10px rgb(22 48 34 / 0.35), 0 2px 10px -4px rgb(22 48 34 / 0.12); }
+  .dark .shadow-card { box-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 6px 20px -8px rgb(0 0 0 / 0.4); }
+  .dark .shadow-float { box-shadow: 0 8px 30px -6px rgb(0 0 0 / 0.5); }
+  .dark .shadow-tab { box-shadow: 0 12px 36px -10px rgb(0 0 0 / 0.55), 0 2px 10px -4px rgb(0 0 0 / 0.3); }
+
+  /* skeleton shimmer */
+  .shimmer {
+    background: linear-gradient(100deg, var(--muted) 40%, color-mix(in oklab, var(--muted) 55%, white) 50%, var(--muted) 60%);
+    background-size: 200% 100%;
+    animation: shimmer-slide 1.6s infinite linear;
+  }
+  .dark .shimmer {
+    background: linear-gradient(100deg, var(--muted) 40%, color-mix(in oklab, var(--muted) 70%, white 12%) 50%, var(--muted) 60%);
+    background-size: 200% 100%;
+  }
+  @keyframes shimmer-slide {
+    from { background-position: 200% 0; }
+    to { background-position: -200% 0; }
+  }
+
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  /* ══ M3 Expressive shapes — the mixed-radius container signature.
+     Large organic corner + one tight corner reads as "expressive",
+     not decorative: it marks hero/featured geometry. */
+  .shape-m3 { border-radius: 32px 32px 32px 12px; }
+  .shape-m3-flip { border-radius: 32px 12px 32px 32px; }
+  .shape-m3-top { border-radius: 32px 32px 12px 32px; }
+  .shape-hero-m3 { border-radius: 0 0 32px 12px; }  /* immersive detail hero footer */
+
+  /* M3 tonal containers — hierarchy without borders or noise */
+  .surface-tonal { background: color-mix(in oklab, var(--primary) 9%, var(--card)); }
+  .surface-tonal-strong { background: color-mix(in oklab, var(--primary) 16%, var(--card)); }
+
+  /* spring-press: CSS-native spring feedback for non-framer controls */
+  .spring-press { transition: transform 0.45s var(--spring); }
+  .spring-press:active { transform: scale(0.93); }
+
+  /* editorial display type — generative whitespace partner:
+     oversized, tight-tracked, fluid down to small phones */
+  .t-mega {
+    font-size: clamp(30px, 8.5vw, 37px);
+    line-height: 1.06;
+    letter-spacing: -0.032em;
+    font-weight: 800;
+  }
+
+  /* type scale helpers */
+  .t-display { font-size: var(--ts-display); line-height: 1.15; letter-spacing: -0.02em; font-weight: 800; }
+  .t-title   { font-size: var(--ts-title);   line-height: 1.2;  letter-spacing: -0.015em; font-weight: 800; }
+  .t-headline{ font-size: var(--ts-headline);line-height: 1.3;  font-weight: 700; }
+  .t-body    { font-size: var(--ts-body);    line-height: 1.5; }
+  .t-label   { font-size: var(--ts-label);   line-height: 1.35; font-weight: 600; }
+  .t-micro   { font-size: var(--ts-micro);   line-height: 1.4; }
+
+  /* ambient page backdrop behind the phone canvas on desktop —
+     M3E dynamic: hues follow the daypart variables */
+  .app-ambient {
+    background:
+      radial-gradient(60rem 40rem at 15% 0%, var(--m3-amb-a), transparent 60%),
+      radial-gradient(50rem 36rem at 85% 20%, var(--m3-amb-b), transparent 55%),
+      radial-gradient(55rem 40rem at 50% 100%, var(--m3-amb-c), transparent 60%),
+      var(--background);
+  }
+  .dark .app-ambient {
+    background:
+      radial-gradient(60rem 40rem at 15% 0%, oklch(0.32 0.05 165 / 0.5), transparent 60%),
+      radial-gradient(50rem 36rem at 85% 20%, oklch(0.34 0.05 90 / 0.35), transparent 55%),
+      radial-gradient(55rem 40rem at 50% 100%, oklch(0.30 0.04 195 / 0.45), transparent 60%),
+      var(--background);
+  }
+}
+
+/* ── Reduced motion: honour the OS setting everywhere ──────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .shimmer { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

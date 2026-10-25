@@ -1,0 +1,213 @@
+// Evidence-Graded AYUSH, Yoga, Fitness & Nutrition Platform
+// Sandbox: SQLite (production target: PostgreSQL + JSONB per spec).
+// JSON columns are stored as String (JSON-encoded) because Prisma/SQLite
+// does not support the Json type — swap to `Json` when migrating to Postgres.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Core Content Entities ────────────────────────────────────────────────
+
+model Herb {
+  id                  Int       @id @default(autoincrement())
+  slug                String    @unique
+  commonNameEn        String
+  commonNameHi        String
+  latinBinomial       String // unique per botanical normally; relaxed for future multi-variant imports
+  sanskritName        String?
+  synonyms            String // JSON: array of regional names / scripts
+  ayurvedicProperties String // JSON: { rasa, guna, virya, vipaka, doshaAction }
+  safetyFlags         String // JSON: { pregnancy, lactation, children, doseLimit, interactions[], warnings[] }
+  usageAndDose        String?
+  linkedYogaSlugs     String? // JSON: array of asana slugs
+  // ── Catalog import (excel_v1_2026-10-03) ──
+  category            String?
+  description         String?
+  usesBenefits        String?
+  precautions         String?
+  evidenceGrade       String? // A | B | C | T (source-authority derived; claims remain authoritative)
+  safetyLevel         String? // restricted | high_caution | medium_caution | general
+  sourceUrl           String?
+  imageUrl            String? // real photo (public/img/herbs/<base>.jpg) — per base entity
+  createdAt           DateTime  @default(now())
+
+  @@index([commonNameEn])
+  @@index([commonNameHi])
+}
+
+model Asana {
+  id               Int      @id @default(autoincrement())
+  slug             String   @unique
+  nameEn           String
+  nameSanskrit     String
+  nameHi           String
+  category         String // standing | seated | supine | prone | prone-pranayama | pranayama | meditation | inversion
+  difficultyLevel  String // beginner | intermediate | advanced
+  contraindications String // JSON: array of restricted conditions
+  benefits         String // JSON: array of benefit strings
+  mediaUrls        String? // JSON: array
+  // ── Catalog import (excel_v1_2026-10-03) ──
+  description      String?
+  instructions     String?
+  precautions      String?
+  safetyFlags      String? // JSON: array of condition flags
+  evidenceGrade    String?
+  safetyLevel      String?
+  sourceUrl        String?
+  imageUrl         String? // real pose photo (public/img/yoga/<base>.jpg)
+  createdAt        DateTime @default(now())
+
+  @@index([category])
+}
+
+model Condition {
+  id           Int     @id @default(autoincrement())
+  slug         String  @unique
+  nameEn       String
+  nameHi       String
+  namasteCode  String? @unique // NAMASTE terminology codes (seed values illustrative)
+  icdCode      String? @unique
+  tm2Category  String? // WHO TM2 category
+  description  String?
+  createdAt    DateTime @default(now())
+}
+
+model Food {
+  id             Int    @id @default(autoincrement())
+  slug           String @unique
+  nameEn         String
+  nameHi         String
+  category       String // millets | dal | grain | spice | produce | dairy | nuts-oilseeds | sweetener | fat | vitamin | mineral | protein
+  servingSizeG   Float?
+  calories       Float?
+  proteinG       Float?
+  carbsG         Float?
+  fatG           Float?
+  fiberG         Float?
+  micronutrients String // JSON: highlights {calcium_mg, iron_mg, vitc_mg, ...}
+  source         String @default("ICMR-NIN 2024 / IFCT aligned")
+  // ── Catalog import (excel_v1_2026-10-03) ──
+  scientificClass  String?
+  description      String?
+  usesBenefits     String?
+  servingGuidance  String?
+  precautions      String?
+  safetyFlags      String? // JSON: array
+  evidenceGrade    String?
+  safetyLevel      String?
+  sourceUrl        String?
+  imageUrl         String? // real food photo (public/img/foods/<base>.jpg)
+
+  @@index([category])
+}
+
+// ─── Homeopathy (DMR Act 1954 mandatory disclaimer) ───────────────────────
+
+model HomeopathyRemedy {
+  id              Int      @id @default(autoincrement())
+  slug            String   @unique
+  nameEn          String
+  nameHi          String
+  nameTranslit    String?
+  latinSource     String?
+  category        String
+  description     String?
+  indications     String?
+  potencyDosage   String?
+  precautions     String?
+  safetyFlags     String // JSON: array
+  safetyLevel     String   @default("general") // restricted | high_caution | medium_caution | general
+  dmrCompliance   String // JSON: { disclaimer_required, disclaimer_key, self_diagnosis_warning }
+  emergencyWarning Boolean @default(false)
+  evidenceTier    String   @default("T") // A | B | C | T
+  evidenceBasis   String?
+  synonyms        String // JSON: array
+  sourceUrl       String?
+  imageUrl        String? // real remedy photo (public/img/homeopathy/<base>.jpg)
+  workflowStatus  String   @default("source_checked")
+  createdAt       DateTime @default(now())
+
+  @@index([category])
+}
+
+// ─── Evidence & Editorial ─────────────────────────────────────────────────
+
+model Claim {
+  id                  Int      @id @default(autoincrement())
+  entityType          String // herb | condition | yoga | nutrition | homeopathy
+  entityId            Int
+  statement           String
+  statementHi         String?
+  evidenceTier        String // A: systematic reviews, B: limited trials, C: lab/animal, T: traditional
+  sources             String // JSON: array of citations {title, publisher, year}
+  reviewerName        String
+  reviewerCredentials String
+  lastReviewedDate    DateTime
+  nextReviewDate      DateTime
+  workflowStatus      String   @default("draft") // draft | source_checked | expert_reviewed | compliance_checked | published
+
+  @@index([entityType, entityId])
+  @@index([workflowStatus])
+}
+
+model Interaction {
+  id               Int    @id @default(autoincrement())
+  herbSlug         String
+  medicationPattern String // lowercase medication or drug-class keyword
+  medicationLabel  String
+  severity         String // high | moderate | mild
+  descriptionEn    String
+  descriptionHi    String
+  adviceEn         String
+  sources          String // JSON: array of citation strings
+
+  @@index([herbSlug])
+}
+
+model Synonym {
+  id       Int    @id @default(autoincrement())
+  canonical String // canonical entity or concept
+  synonyms String // JSON: array of alternate names (Latin, English, Hindi, Tamil, ...)
+  language String @default("multi")
+
+  @@index([canonical])
+}
+
+// ─── DPDP Act 2023 — Consent Ledger ───────────────────────────────────────
+
+model ConsentLedger {
+  id        String    @id @default(cuid())
+  clientId  String // pseudonymous client identifier
+  purpose   String // analytics | personalisation | saved_routines
+  status    String // granted | revoked | deleted
+  grantedAt DateTime  @default(now())
+  revokedAt DateTime?
+
+  @@index([clientId])
+}
+
+// ─── Multi-language Content Translations ──────────────────────────────────
+// One row per (language, section, base-entity slug). `name` is the localized
+// display name; `data` is a JSON string of localized content fields
+// (description/uses/precautions/... per section). English is the source of
+// truth and is never stored here — missing rows fall back to English.
+
+model ContentTranslation {
+  id        Int      @id @default(autoincrement())
+  lang      String // hi | ta | te | bn | mr
+  section   String // herbs | yoga | foods | homeopathy
+  slug      String   // base-entity slug (representative row)
+  name      String   // localized display name
+  data      String   // JSON: { field: translation }
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@unique([lang, section, slug])
+  @@index([section, slug])
+  @@index([lang, section])
+}

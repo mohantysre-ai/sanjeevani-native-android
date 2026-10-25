@@ -3,6 +3,7 @@ node_modules/
 dist/
 build/
 npm-debug.log*
+.native-stash/
 
 # Android / Gradle
 .gradle/
@@ -10,6 +11,10 @@ npm-debug.log*
 /android/.gradle/
 /android/app/build/
 /android/local.properties
+/android/capacitor-cordova-android-plugins/build/
 .idea/
 *.iml
 .DS_Store
+
+# Keystore is REQUIRED in-tree for the wired release signing config
+# (keys/sanjeevani-release.jks). Keep it private — never fork this repo public.
